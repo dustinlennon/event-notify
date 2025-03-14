@@ -1,0 +1,6 @@
+env_prefix: EXAMPLE
+env_defaults:
+  timezone: US/Pacific
+  interface: 0.0.0.0
+  url_root: http://localhost:8123
+
