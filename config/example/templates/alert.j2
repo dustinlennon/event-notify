@@ -1,0 +1,4 @@
+{%- set current_time = now() -%}
+{{ message }} {%+ if timestamp -%}
+// sent on {{ current_time.strftime("%b %d, %Y") }} at {{ current_time.strftime("%H:%M") }}
+{%- endif -%}

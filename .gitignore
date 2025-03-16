@@ -1,4 +1,5 @@
 __pycache__
-twistd.log
-twistd.pid
 .env
+token.json
+dotenv
+config/local

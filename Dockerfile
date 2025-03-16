@@ -3,9 +3,15 @@ FROM python:3.12-alpine3.21
 COPY requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
-ENV PYTHONPATH=/home/app
-ENV SCAFFOLD_PATH=/home
+RUN mkdir -p /home/notify
+COPY app /home/notify/app
 
-WORKDIR /home
+ENV PYTHONPATH=/home/notify
+ENV NOTIFY_HOME=/home/notify
 
-CMD ["/usr/local/bin/twistd", "-ny", "/home/app/server.tac"]
+VOLUME /home/notify/conf
+VOLUME /home/notify/templates
+
+WORKDIR /home/notify
+
+ENTRYPOINT ["/usr/local/bin/python", "app/notify.py"]

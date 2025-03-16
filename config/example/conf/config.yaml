@@ -1,0 +1,22 @@
+env:
+  prefix: NOTIFY
+  defaults:
+    home:
+    timezone: US/Pacific
+
+scopes:
+- https://www.googleapis.com/auth/gmail.send
+- https://www.googleapis.com/auth/gmail.readonly
+
+message:
+  subject: event-notify
+
+templates:
+- name: alert
+  args:
+  - name_or_flags: "--timestamp"
+    kws:
+      action: "store_true"
+  - name_or_flags: "--message"
+    kws:
+      required: True

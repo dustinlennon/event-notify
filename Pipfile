@@ -4,10 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-klein = "*"
 pyyaml = "*"
-jinja2 = "*"
 pytz = "*"
+google-api-python-client = "*"
+google-auth-httplib2 = "*"
+google-auth-oauthlib = "*"
+google-auth = "*"
+requests = "*"
+jinja2 = "*"
 
 [dev-packages]
 

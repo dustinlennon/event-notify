@@ -1,0 +1,2 @@
+NOTIFY_HOME=<absolute path to the event-notify directory>/config/example
+NOTIFY_RECIPIENT=<a recipient's email address>
