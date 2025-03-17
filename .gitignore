@@ -1,5 +1,6 @@
 __pycache__
 .env
+dotenv
 token.json
 dotenv
-config/local
+local

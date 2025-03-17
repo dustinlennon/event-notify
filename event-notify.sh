@@ -23,6 +23,5 @@ if [ "$1" = '--rebuild' ]; then
 fi
 
 docker run -it --rm \
-	-v ${NOTIFY_HOME}/conf:/home/notify/conf \
-	-v ${NOTIFY_HOME}/templates:/home/notify/templates \
-	event-notify ${NOTIFY_RECIPIENT} "$@"
+	-v ${NOTIFY_AUX_PATH}:/home/notify/aux \
+	event-notify "$@"

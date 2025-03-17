@@ -23,33 +23,40 @@ from app.base_params import BaseParams
 
 import argparse
 class NotifyParams(BaseParams):
-  def __init__(self, cfg):
-    super().__init__(cfg)
+  _prefix = "NOTIFY"
+
+  def __init__(self, *, cfg, **kws):
+    super().__init__(
+      prefix = self._prefix,
+      cfg = cfg
+    )
 
     self._templates = cfg.templates
     self.scopes     = cfg.scopes
     self.message    = cfg.message
 
+  @classmethod
+  def from_dotenv(cls):
+    instance = super().from_dotenv(cls._prefix)
+    return instance
+
   def parse_args(self) -> SimpleNamespace:
     main_parser = argparse.ArgumentParser()
-    main_parser.add_argument("recipient")
 
     subparsers = main_parser.add_subparsers(dest='cmd')
     subparsers.required = True
-    # parsers = {}
     for template in self._templates:
       template_name = template.name
       template_args = template.args
       template_file = f"{template_name}.j2"
       
       parser = subparsers.add_parser(template_name)
+      parser.add_argument("--recipient", required = True)
       parser.add_argument("--template", default = template_file, help=argparse.SUPPRESS)
       for targs in template_args:
         name  = targs.name_or_flags
         kws   = targs.kws
         parser.add_argument(name, **vars(kws))
-
-      # parsers[template_name] = parser
 
     args = main_parser.parse_args()
     return args
@@ -60,8 +67,8 @@ class NotifyParams(BaseParams):
 def get_credentials(np : NotifyParams):
   creds = None
 
-  token_path  = np.path("conf", "token.json")
-  cs_path     = np.path("conf", "client_secret.json")
+  token_path  = np.aux_path("secrets/token.json")
+  cs_path     = np.aux_path("secrets/client_secret.json")
 
   if os.path.exists(token_path):
     creds = Credentials.from_authorized_user_file(token_path, np.scopes)
@@ -131,13 +138,18 @@ def create_notification(np : NotifyParams, content, sender, recipient):
 if __name__ == '__main__':
   from jinja2 import Environment, FileSystemLoader
 
-  params = NotifyParams.from_path("conf/config.yaml")
+  aux_path = os.environ.get("NOTIFY_AUX_PATH")
+  if aux_path:
+    params = NotifyParams.from_path("NOTIFY", f"{aux_path}/config.yaml")
+  else:
+    params = NotifyParams.from_dotenv()
+
   args = params.parse_args()
   kws = vars(args)
 
   # jinja setup
   j2env = Environment(
-    loader = FileSystemLoader(params.path("templates")),
+    loader = FileSystemLoader(params.aux_path("templates")),
     autoescape = True
   )
   j2env.globals['now'] = params.now

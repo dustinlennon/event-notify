@@ -1,8 +1,10 @@
+# 'env' defines default values for unset environment variables.  These may be
+# overridden by a correspondingly named environment variable, e.g.
+# NOTIFY_APP_PATH, NOTIFY_AUX_PATH, or NOTIFY_TIMEZONE
 env:
-  prefix: NOTIFY
-  defaults:
-    home:
-    timezone: US/Pacific
+  app_path: .
+  aux_path: ./aux/example
+  timezone: US/Pacific
 
 scopes:
 - https://www.googleapis.com/auth/gmail.send
