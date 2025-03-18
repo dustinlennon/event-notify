@@ -12,6 +12,8 @@ class DotenvReader(object):
         result = self.read_dotenv(pth)
       except FileNotFoundError:
         pass
+      except TypeError:
+        pass
       else:
         break
 
@@ -21,11 +23,11 @@ class DotenvReader(object):
     return result
 
   @classmethod
-  def read_dotenv(cls, dotenv):
+  def read_dotenv(cls, pth):
     regex = re.compile(r"\${(?P<name>.*?)}")
 
     result = {}
-    with open(dotenv) as f:
+    with open(pth) as f:
       for line in f.readlines():
         line = line.strip()
         if line == "" or line[0] == '#':

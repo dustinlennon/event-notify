@@ -24,6 +24,7 @@ from app.base_params import BaseParams
 import argparse
 class NotifyParams(BaseParams):
   _prefix = "NOTIFY"
+  _opt_path = "/opt/event-notify"
 
   def __init__(self, *, cfg, **kws):
     super().__init__(
@@ -37,7 +38,7 @@ class NotifyParams(BaseParams):
 
   @classmethod
   def from_dotenv(cls):
-    instance = super().from_dotenv(cls._prefix)
+    instance = super().from_dotenv(cls._prefix, cls._opt_path)
     return instance
 
   def parse_args(self) -> SimpleNamespace:

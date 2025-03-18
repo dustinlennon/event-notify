@@ -8,8 +8,6 @@ ENV PYTHONPATH=/home/notify
 
 COPY app /home/notify/app
 
-ENV NOTIFY_APP_PATH=/home/notify/app
-
 ENV NOTIFY_AUX_PATH=/home/notify/aux
 VOLUME /home/notify/aux
 

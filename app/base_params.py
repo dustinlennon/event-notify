@@ -38,7 +38,6 @@ def _preprocess(d):
 
 class BaseParams(object):
   def __init__(self, *, prefix, cfg):
-    self._app_path = os.environ.get(f"{prefix}_APP_PATH", cfg.env.app_path or os.getcwd())
     self._aux_path = os.environ.get(f"{prefix}_AUX_PATH", cfg.env.aux_path or os.getcwd())
 
     timezone  = os.environ.get(f"{prefix}_TIMEZONE", cfg.env.timezone)
@@ -53,9 +52,9 @@ class BaseParams(object):
     return instance
   
   @classmethod
-  def from_dotenv(cls, prefix):
+  def from_dotenv(cls, prefix, opt_path = None):
     result = DotenvReader([
-      '/opt/event-notify/dotenv',
+      opt_path,
       'dotenv'
     ]).read()
 
@@ -66,10 +65,6 @@ class BaseParams(object):
 
     instance = cls.from_path(prefix, config_path)
     return instance
-
-  def app_path(self, *args):
-    pth = os.path.sep.join([self._app_path] + list(args))
-    return pth
 
   def aux_path(self, *args):
     pth = os.path.sep.join([self._aux_path] + list(args))
